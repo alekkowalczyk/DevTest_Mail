@@ -1,0 +1,51 @@
+﻿<base:BaseView x:Class="DeveloperTest.Views.BodyView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:base="clr-namespace:DeveloperTest.Views.Base"
+               xmlns:conv="clr-namespace:DeveloperTest.Converters"
+             xmlns:vm="clr-namespace:DeveloperTest.ViewModels.Mail"
+               xmlns:utils="clr-namespace:DeveloperTest.Utils"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance vm:MailBodyViewModel}"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <base:BaseView.Resources>
+        <conv:BodyTypeToVisibility x:Key="bodyTypeToVisibility"></conv:BodyTypeToVisibility>
+        <conv:CollectionToString x:Key="collectionToString"></conv:CollectionToString>
+        <Style x:Key="labelText" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            <Setter Property="Margin" Value="5"></Setter>
+        </Style>
+    </base:BaseView.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource labelText}">From</TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource labelText}">Recipients</TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource labelText}">Subject</TextBlock>
+
+        <TextBox Grid.Row="0" Grid.Column="1" IsReadOnly="True" Text="{Binding Envelope.From.FullName, Mode=OneWay}" Margin="5"></TextBox>
+        <TextBox Grid.Row="1" Grid.Column="1" IsReadOnly="True" Text="{Binding Envelope.Recipients, Converter={StaticResource collectionToString}}" Margin="5"></TextBox>
+        <TextBox Grid.Row="2" Grid.Column="1" IsReadOnly="True" Text="{Binding Envelope.Subject}" Margin="5"></TextBox>
+        
+        <Grid Grid.Row="3" Grid.ColumnSpan="2" Margin="5">
+            <TextBox IsReadOnly="True" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                         Text="{Binding Content}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                     Visibility="{Binding Type, Converter={StaticResource bodyTypeToVisibility}, ConverterParameter=TXT}"
+                     ></TextBox>
+            <WebBrowser Visibility="{Binding Type, Converter={StaticResource bodyTypeToVisibility}, ConverterParameter=HTML}"
+                        utils:WebBrowserAttachedProperties.BindableContent="{Binding Content}"
+                        ></WebBrowser>
+        </Grid>
+    </Grid>
+</base:BaseView>

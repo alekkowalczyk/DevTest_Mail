@@ -1,0 +1,78 @@
+﻿<base:BaseView x:Class="DeveloperTest.Views.ConnectionSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:base="clr-namespace:DeveloperTest.Views.Base"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+               xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+               xmlns:vm="clr-namespace:DeveloperTest.ViewModels"
+               xmlns:utils="clr-namespace:DeveloperTest.Utils"
+               xmlns:enums="clr-namespace:DeveloperTest.Enums"
+               d:DataContext="{d:DesignInstance vm:ConnectionSettingsViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="120" d:DesignWidth="700">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="Label">
+                <Setter Property="Margin" Value="5"></Setter>
+                <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+                <Setter Property="VerticalAlignment" Value="Center"></Setter>
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="Margin" Value="5"></Setter>
+                <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+                <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                <Setter Property="Height" Value="23"></Setter>
+                <Setter Property="IsEnabled" Value="{Binding IsEnabled}"></Setter>
+            </Style>
+            <Style TargetType="ComboBox">
+                <Setter Property="Margin" Value="5"></Setter>
+                <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+                <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                <Setter Property="Height" Value="23"></Setter>
+                <Setter Property="DisplayMemberPath" Value="Description"></Setter>
+                <Setter Property="SelectedValuePath" Value="Value"></Setter>
+                <Setter Property="IsEnabled" Value="{Binding IsEnabled}"></Setter>
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="Server type" />
+        <ComboBox Grid.Row="0" Grid.Column="1" 
+                  ItemsSource="{Binding Source={utils:Enumeration {x:Type enums:ProtocolType}}}"
+                  SelectedValue="{Binding ProtocolType}"
+                  />
+
+        <Label Grid.Row="0" Grid.Column="2" Content="Encryption" />
+        <ComboBox Grid.Row="0" Grid.Column="3" 
+                  ItemsSource="{Binding Source={utils:Enumeration {x:Type enums:EncryptionType}}}"
+                  SelectedValue="{Binding EncryptionType}"
+                  />
+
+        <Label Grid.Row="1" Grid.Column="0" Content="Server" />
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Server}" />
+
+        <Label Grid.Row="1" Grid.Column="2" Content="Username" />
+        <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Username}" />
+
+        <Label Grid.Row="2" Grid.Column="0" Content="Port" />
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Port}" >
+            <i:Interaction.Behaviors>
+                <utils:NumericTextBoxBehavior  />
+            </i:Interaction.Behaviors>
+        </TextBox>
+
+        <Label Grid.Row="2" Grid.Column="2"  Content="Password" />
+        <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding Password}" />
+    </Grid>
+</base:BaseView>
